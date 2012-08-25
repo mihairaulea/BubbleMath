@@ -1,0 +1,15 @@
+Speech Balloons Kit for Photoshop 6 and Photoshop Elements
+
+This kit includes the following files:
+Speech Balloons.asl (layer style for Photoshop)
+Speech Balloons.csh (custom shapes for Photoshop)
+Speech Balloons.txt (this file)
+
+For instructions on how to use this kit, please see:
+http://graphicssoft.about.com/library/weekly/aa0801balloons.htm
+
+Please do not distribute these files without this accompanying text file.
+
+Copyright © Sue Chastain, 2001.
+Licensed to About.com.
+All rights reserved.

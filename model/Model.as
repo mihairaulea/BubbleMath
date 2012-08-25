@@ -26,14 +26,21 @@
 		private var objectiveRange:int = 30;
 		
 		// gameplay
-		//noOfBusts
-		//calculator
 		
-		static public var SCORE_PENALTY:String = "scorePenalty"; 
-		static public var SCORE_BONUS:String = "scoreBonus"; 
-		static public var UPDATE_EQUATION:String = "updateEquation";
+		public var noOfLives:int = 3;
+		public var noOfBusts:int = 0;
+		
+		private var calculator:Calculator = new Calculator();
+		
+		public static var NEW_GAME:String = "newGame";
+		
+		public static var SCORE_PENALTY:String = "scorePenalty"; 
+		public static var SCORE_BONUS:String = "scoreBonus"; 
+		public static var UPDATE_EQUATION:String = "updateEquation";
 		
 		public static var BUST:String = "bust";
+		public static var GREAT:String = "great"; 
+		
 		
 		public function Model() 
 		{
@@ -42,7 +49,8 @@
 		
 		public function init()
 		{			
-			dispatchEvent(new Event(Model.BUST));
+			dispatchEvent(new Event(Model.NEW_GAME));
+			dispatchEvent(new Event(Model.UPDATE_EQUATION));
 		}
 		
 		private function setOperatorsArray()
@@ -93,6 +101,10 @@
 		}
 		*/
 		
+		public function bust()
+		{
+			dispatchEvent(new Event(Model.BUST));
+		}
 	}
 
 }
