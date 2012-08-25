@@ -22,6 +22,7 @@
 		{
 			setModel();
 			setView();
+			trace("this is another modif");
 		}		
 		
 		private function setModel()
