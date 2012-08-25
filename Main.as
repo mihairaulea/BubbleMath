@@ -23,6 +23,9 @@
 			setModel();
 			setView();
 			trace("this is another modif");
+			trace("this is yet another modif");
+			////
+			trace("this is the latest bitch");
 		}		
 		
 		private function setModel()
