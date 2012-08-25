@@ -21,7 +21,16 @@
 		
 		public function Main()
 		{
+<<<<<<< HEAD
 			loaderInfo.addEventListener(Event.COMPLETE, onCompleteInfo);
+=======
+			setModel();
+			setView();
+			trace("this is another modif");
+			trace("this is yet another modif");
+			////
+			trace("this is the latest bitch");
+>>>>>>> 5e3b7ab83684b07948d24492d715b47bd25d98ab
 		}		
 		
 		private function onCompleteInfo(e:Event):void
