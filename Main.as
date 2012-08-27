@@ -5,7 +5,7 @@
 	import flash.text.*;
 	import flash.events.*;
 	import flash.text.engine.TextBlock;
-	import view.View;
+	import view.*;
 	
 	//timer
 	import flash.utils.Timer;
@@ -21,16 +21,7 @@
 		
 		public function Main()
 		{
-<<<<<<< HEAD
 			loaderInfo.addEventListener(Event.COMPLETE, onCompleteInfo);
-=======
-			setModel();
-			setView();
-			trace("this is another modif");
-			trace("this is yet another modif");
-			////
-			trace("this is the latest bitch");
->>>>>>> 5e3b7ab83684b07948d24492d715b47bd25d98ab
 		}		
 		
 		private function onCompleteInfo(e:Event):void
@@ -38,7 +29,7 @@
 			stage.addEventListener(Event.RESIZE, resizeHandler);
 			
 			GlobalVariables.SCENE_HEIGHT = loaderInfo.height;
-			GlobalVariables.SCENE_WIDTH = loaderInfo.width;
+			GlobalVariables.SCENE_WIDTH = loaderInfo.width; 
 			
 			setView();
 			setModel();
@@ -55,22 +46,33 @@
 			modelInst.addEventListener(Model.BUST, bustHandler);
 			modelInst.addEventListener(Model.GREAT, greatHandler);
 			modelInst.addEventListener(Model.NEW_GAME, newGameHandler);
-			modelInst.addEventListener(Model.UPDATE_EQUATION, updateEquationHandler);
+			modelInst.addEventListener(Model.NEW_PIECE, newPieceHandler);
+			//modelInst.addEventListener(Model.UPDATE_EQUATION, updateEquationHandler);
 			modelInst.init();
 		}
 		
-		// model event handlers
+		//{ region Model event handlers
+		
 		private function newGameHandler(e:Event)
 		{
 			viewInst.newGame(modelInst.getNewObjective(), modelInst.noOfLives);
-			//viewInst.addBubbleOperator("-", 0);
+			modelInst.startPieces();
 		}
 		
-		private function updateEquationHandler(e:Event)
+		private function newPieceHandler(e:Event)
 		{
-			var char:String = "1+5*7/9-3";
-			viewInst.updateEquation(char);
+			var calcElem:CalcElement = modelInst.getRandomElement();
+			
+			if (calcElem.type == 0)
+				viewInst.addBubbleNumber(int(calcElem.value), calcElem.pos);
+			else
+				viewInst.addBubbleOperator(calcElem.value, calcElem.pos);
 		}
+		
+		//private function updateEquationHandler(e:Event)
+		//{
+		//	viewInst.updateEquation();
+		//}
 		
 		private function bustHandler(e:Event)
 		{
@@ -83,17 +85,24 @@
 		}
 		
 		
-		// end model event handlers
+		//} end region 
 		
 		private function setView()
 		{
 			// THE ONLY ADD CHILD IN THIS CLASS!!!
+			viewInst.addEventListener(BubblePool.BUBBLE_CLICKED, bubbleClickedHandler);
 			viewInst.init();
 			addChild(viewInst);
 		}
 		
 		//view event handlers
 		
+		private function bubbleClickedHandler(e:Event)
+		{
+			trace(e.currentTarget.value, e.currentTarget.type);
+			var eq:String = modelInst.addToEquation(e.currentTarget.value, e.currentTarget.type);
+			viewInst.updateEquation(eq);
+		}
 		
 		// end view event handlers
 	}

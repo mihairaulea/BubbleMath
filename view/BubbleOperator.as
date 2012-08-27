@@ -6,7 +6,8 @@ package view
 	
 	public class BubbleOperator extends Sprite
 	{	
-		public var type:String = "";
+		public var type:int = 1;
+		public var value:String = "";
 		public var operator:DisplayObject;
 		
 		public function BubbleOperator() 
@@ -21,22 +22,22 @@ package view
 				case "+":
 					var operatorPlus:operatorPlusMC = new OperatorPlusMC();
 					operator = operatorPlus;
-					type = "+";
+					value = "+";
 					break;
 				case "-":
 					var operatorSubstract:operatorSubstractMC = new OperatorSubstractMC();
 					operator = operatorSubstract;
-					type = "-";
+					value = "-";
 					break;
 				case "*":
 					var operatorMultiply:operatorMultiplyMC = new OperatorMultiplyMC();
 					operator = operatorMultiply;
-					type = "*";
+					value = "*";
 					break;
 				case "/":
 					var operatorDivide:operatorDivideMC = new OperatorDivideMC();
 					operator = operatorDivide;
-					type = "/";
+					value = "/";
 					break;
 			}
 			

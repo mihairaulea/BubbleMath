@@ -41,18 +41,13 @@ package view
 		
 		public function init()
 		{
-			//Objective display init
-			objTextFormat = new TextFormat(objTextFont.fontName, textSize, 0x1370b6, false, false, false, null, null, "left");			
-			//objTextFormat.size = 35;
-			//objTextFormat.align = TextFormatAlign.LEFT;
-			objTextFormat.font = objTextFont.fontName;
+			//{ region Objective display init
 			
-			trace("modificarE");
+			objTextFormat = new TextFormat(objTextFont.fontName, textSize, 0x1370B6, false, false, false, null, null, "left");			
 			
 			objText.text = "";
 			objText.defaultTextFormat = objTextFormat;
 			objText.autoSize = TextFieldAutoSize.LEFT;
-			objText.textColor = 0x1370B6;
 			objText.x = objectiveX;
 			objText.y = objectiveY;
 			objText.embedFonts = true;
@@ -62,7 +57,10 @@ package view
 			objText.filters = [outline];
 			addChild(objText);
 			
-			//Notifications init
+			//} endregion
+			
+			//{ region Notifications init
+			
 			notifBust.x = notifX;
 			notifBust.y = notifY;
 			notifBust.visible = false;
@@ -72,15 +70,15 @@ package view
 			addChild(notifBust);
 			addChild(notifGreat);
 			
-			//Equation init
-			eqTextFormat.size = 35;
-			eqTextFormat.align = TextFormatAlign.LEFT;
-			eqTextFormat.font = eqTextFont.fontName;
+			//} endregion
+			
+			//{ region Equation init
+			
+			eqTextFormat = new TextFormat(eqTextFont.fontName, textSize, 0xFCCC2B, false, false, false, null, null, "left");
 			
 			equationText.text = "";
 			equationText.defaultTextFormat = eqTextFormat;
 			equationText.autoSize = TextFieldAutoSize.LEFT;
-			equationText.textColor = 0xFCCC2B;
 			equationText.x = 10;
 			equationText.y = objectiveY;
 			equationText.embedFonts = true;
@@ -89,6 +87,8 @@ package view
 			equationText.selectable = false;
 			equationText.filters = [outline];
 			addChild(equationText);
+			
+			//} endregion
 		}
 		
 		public function setObjective(obj:int)

@@ -6,13 +6,15 @@ package model
 	{
 		// 0 - numar
 		// 1 - operator
-		var type:int = 0;
-		var value:String = "";
+		public var type:int = 0;
+		public var value:String = "";
+		public var pos:int = 0;
 		
-		public function CalcElement(type:int=0, value:String="")
+		public function CalcElement(type:int=0, value:String="", pos:int =0)
 		{
 			this.type = type;
 			this.value = value;
+			this.pos = pos;
 		}
 		
 	}

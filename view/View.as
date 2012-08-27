@@ -32,7 +32,7 @@ package view
 			addChild(background);
 		
 			display.objectiveX = sceneWidth - 70;
-			display.objectiveY = 20;
+			display.objectiveY = 15;
 			display.notifX = sceneWidth / 2;
 			display.notifY = sceneHeight / 2;
 			display.init();

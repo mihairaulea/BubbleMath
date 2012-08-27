@@ -30,7 +30,7 @@ package model
 			if ( !checkIfEquationIsSane() ) 
 			{
 				reset();
-				dispatchEvent(new Event(Calculator.BUST));
+				//dispatchEvent(new Event(Calculator.BUST));
 				return;
 			}
 			else
@@ -59,11 +59,12 @@ package model
 						modifier.value = elem.value;
 						modifier.type = 0;
 					
+						
 						//dispatchEvent(new Event(Calculator.UPDATE_EQUATION));
 					}
 					else
 					{
-						//dispatchEvent(new Event(Calculator.SCORE_PENALTY));
+						//dispatchEvent(new Event(Calculator.BUST));
 					}
 				}
 				else 
@@ -78,7 +79,7 @@ package model
 					}
 					else
 					{
-						//dispatchEvent(new Event(Calculator.SCORE_PENALTY));
+						//dispatchEvent(new Event(Calculator.BUST));
 					}
 				}
 				

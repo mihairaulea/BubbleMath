@@ -10,11 +10,11 @@ package view
 		
 		private var availableOperatorsPool:Array = new Array();
 		private var inGameOperatorsPool:Array = new Array();
-		private var totalNoOfOperators:int = 40;
+		private var totalNoOfOperators:int = 20;
 		
 		private var availableNumbersPool:Array = new Array();
 		private var inGameNumbersPool:Array = new Array();
-		private var totalNoOfNumbers:int = 100;
+		private var totalNoOfNumbers:int = 20;
 		
 		// should be a function of velocity, and screen size
 		private var timeToGoThroughStage:int = 20;
@@ -24,6 +24,8 @@ package view
 		
 		// increases spacing between pieces horisontally | 1 unit is 1/4 of a piece
 		private var spacing:int = 3;
+		
+		static public var BUBBLE_CLICKED:String = "bubbleClicked";
 		
 		public function BubblePool() 
 		{
@@ -39,25 +41,32 @@ package view
 			
 			for (var j:int = 0; j < totalNoOfNumbers; j++)
 			{
-				availableNumbersPool[i] = new BubbleNumber();
+				availableNumbersPool.push(new BubbleNumber());
 			}
 		}
 		
 		// should be in different class maybe?		
 		public function spawnNewNumberBubble(bubbleNumber:int, pos:int)
 		{
-			var bubbleToUse:BubbleNumber = availableNumbersPool[availableOperatorsPool.length - 1];
+			var bubbleToUse:BubbleNumber = availableNumbersPool[availableNumbersPool.length - 1];
 			availableNumbersPool.splice(availableNumbersPool.length - 1, 1);
+			bubbleToUse.initBubbleNumber(bubbleNumber);
 			inGameNumbersPool.push(bubbleToUse);
-			
+			bubbleToUse.x = pos * spacing * (maxPos / bubbleToUse.width);
 			bubbleToUse.y = -bubbleToUse.height;
 			
+			bubbleToUse.addEventListener(MouseEvent.CLICK, bubbleClickedHandler);
+			
+			addChild(bubbleToUse);
 			animateNumberBubble(bubbleToUse);
 		}
 		
 		private function animateNumberBubble( bubble:BubbleNumber )
 		{
-			TweenMax.to( bubble, timeToGoThroughStage, { y : stage.stageHeight, onComplete: bubbleAnimationComplete } );
+			var temp:Array = new Array();
+			temp.push(bubble);
+			
+			TweenMax.to( bubble, timeToGoThroughStage, { y : stage.stageHeight, onComplete: bubbleNumberAnimationComplete, onCompleteParams: temp } );
 		}
 		
 		public function spawnNewOperatorBubble(bubbleOp:String, pos:int)
@@ -68,6 +77,9 @@ package view
 			inGameOperatorsPool.push(bubbleToUse);
 			bubbleToUse.x = pos *  spacing * (maxPos / bubbleToUse.width);
 			bubbleToUse.y = -bubbleToUse.height;
+			
+			bubbleToUse.addEventListener(MouseEvent.CLICK, bubbleClickedHandler);
+			
 			addChild(bubbleToUse);			
 			animateOperatorBubble(bubbleToUse);
 		}
@@ -81,9 +93,14 @@ package view
 		}
 		
 		// number reached end 
-		private function bubbleAnimationComplete()
+		private function bubbleNumberAnimationComplete(bubbleFinished:BubbleNumber)
 		{
-			trace("bubble reached bottom of stage");
+			inGameNumbersPool.splice(0, 1);
+			
+			removeChild(bubbleFinished);
+			bubbleFinished.resetBubbleNumber();
+			
+			availableNumbersPool.push(bubbleFinished);
 		}
 		
 		// operator reached end 
@@ -97,6 +114,13 @@ package view
 			
 			//add bubble back to availableOperatorsPool
 			availableOperatorsPool.push(bubbleFinished);
+		}
+		
+		private function bubbleClickedHandler(e:MouseEvent)
+		{
+			trace(e.currentTarget.value);
+			dispatchEvent(new Event(BubblePool.BUBBLE_CLICKED));
+			//remove the piece / event / dissolve the piece
 		}
 	}
 

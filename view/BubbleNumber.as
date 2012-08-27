@@ -3,56 +3,57 @@ package view
 	
 	import flash.display.*;
 	import flash.events.*;
+	import flash.filters.GlowFilter;
+	import flash.text.*;
 	
 	public class BubbleNumber extends Sprite
 	{
-		private var numberArrayPos1:Array = new Array();
-		private var numberZero1:ObjectiveZeroMC = new ObjectiveZeroMC();
-		private var numberOne1:ObjectiveOneMC = new ObjectiveOneMC();
-		private var numberTwo1:ObjectiveTwoMC = new ObjectiveTwoMC();
-		private var numberThree1:ObjectiveThreeMC = new ObjectiveThreeMC();
-		private var numberFour1:ObjectiveFourMC = new ObjectiveFourMC();
-		private var numberFive1:ObjectiveFiveMC = new ObjectiveFiveMC();
-		private var numberSix1:ObjectiveSixMC = new ObjectiveSixMC();
-		private var numberSeven1:ObjectiveSevenMC = new ObjectiveSevenMC();
-		private var numberEight1:ObjectiveEightMC = new ObjectiveEightMC();
-		private var numberNine1:ObjectiveNineMC = new ObjectiveNineMC();
+		private var numberText:TextField = new TextField();
+		private var numberTextFormat:TextFormat;
+		private var numberTextFont:Font = new Marvin();
+		private var outline:GlowFilter = new GlowFilter(0xFFFFFF, 1, 6, 6, 10, 1, false, false);
+		private var textSize = 35;
 		
-		private var numberArrayPos2:Array = new Array();		
-		private var numberZero2:ObjectiveZeroMC = new ObjectiveZeroMC();
-		private var numberOne2:ObjectiveOneMC = new ObjectiveOneMC();
-		private var numberTwo2:ObjectiveTwoMC = new ObjectiveTwoMC();
-		private var numberThree2:ObjectiveThreeMC = new ObjectiveThreeMC();
-		private var numberFour2:ObjectiveFourMC = new ObjectiveFourMC();
-		private var numberFive2:ObjectiveFiveMC = new ObjectiveFiveMC();
-		private var numberSix2:ObjectiveSixMC = new ObjectiveSixMC();
-		private var numberSeven2:ObjectiveSevenMC = new ObjectiveSevenMC();
-		private var numberEight2:ObjectiveEightMC = new ObjectiveEightMC();
-		private var numberNine2:ObjectiveNineMC = new ObjectiveNineMC();		
-		
+		public var type:int = 0;
 		public var number:int = 0;
+		public var value:String = "";
 		public var visualBubble:BubbleMC = new BubbleMC();
-		
-		public var visualNumber1:DisplayObject;
-		public var visualNumber2:DisplayObject;
 		
 		public function BubbleNumber() 
 		{
-			
+
 		}
 		
 		public function initBubbleNumber(nr:int)
 		{
-			addChild(visualBubble);
+			numberTextFormat = new TextFormat(numberTextFont.fontName, textSize, 0x1370b6, false, false, false, null, null, "center");
+			numberTextFormat.font = numberTextFont.fontName;
 			
-			if (nr < 10)
-			{
-				
-			}
-			else
-			{
-				
-			}
+			numberText.x = visualBubble.x;
+			numberText.y = visualBubble.height / 8;
+			numberText.width = visualBubble.width;
+			numberText.height = visualBubble.height;
+			
+			numberText.defaultTextFormat = numberTextFormat;
+			numberText.embedFonts = true;
+			numberText.antiAliasType = AntiAliasType.ADVANCED;
+			numberText.multiline = false;
+			numberText.wordWrap = true;
+			numberText.selectable = false;
+			numberText.filters = [outline];
+			
+			value = nr.toString();
+			numberText.text = value; 
+			
+			
+			addChild(visualBubble);
+			addChild(numberText);
+		}
+		
+		public function resetBubbleNumber()
+		{
+			removeChild(numberText);
+			removeChild(visualBubble);
 		}
 	}
 
