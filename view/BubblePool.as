@@ -10,11 +10,13 @@ package view
 		
 		private var availableOperatorsPool:Array = new Array();
 		private var inGameOperatorsPool:Array = new Array();
-		private var totalNoOfOperators:int = 20;
+		private var totalNoOfOperators:int = 40;
 		
 		private var availableNumbersPool:Array = new Array();
 		private var inGameNumbersPool:Array = new Array();
-		private var totalNoOfNumbers:int = 20;
+		private var totalNoOfNumbers:int = 40;
+		
+		public var currentBubble:BubbleView = new BubbleView();
 		
 		// should be a function of velocity, and screen size
 		private var timeToGoThroughStage:int = 20;
@@ -51,6 +53,7 @@ package view
 			var bubbleToUse:BubbleNumber = availableNumbersPool[availableNumbersPool.length - 1];
 			availableNumbersPool.splice(availableNumbersPool.length - 1, 1);
 			bubbleToUse.initBubbleNumber(bubbleNumber);
+			bubbleToUse.alpha = 1;
 			inGameNumbersPool.push(bubbleToUse);
 			bubbleToUse.x = pos * spacing * (maxPos / bubbleToUse.width);
 			bubbleToUse.y = -bubbleToUse.height;
@@ -74,6 +77,7 @@ package view
 			var bubbleToUse:BubbleOperator = availableOperatorsPool[availableOperatorsPool.length -1];
 			availableOperatorsPool.splice(availableOperatorsPool.length -1, 1);
 			bubbleToUse.initBubbleOperator(bubbleOp);
+			bubbleToUse.alpha = 1;
 			inGameOperatorsPool.push(bubbleToUse);
 			bubbleToUse.x = pos *  spacing * (maxPos / bubbleToUse.width);
 			bubbleToUse.y = -bubbleToUse.height;
@@ -118,9 +122,13 @@ package view
 		
 		private function bubbleClickedHandler(e:MouseEvent)
 		{
-			trace(e.currentTarget.value);
-			dispatchEvent(new Event(BubblePool.BUBBLE_CLICKED));
-			//remove the piece / event / dissolve the piece
+			currentBubble.type = e.currentTarget.type;
+			currentBubble.value = e.currentTarget.value;
+			dispatchEvent(new Event(BubblePool.BUBBLE_CLICKED, true));
+			
+			e.currentTarget.mouseEnabled = false;
+			e.currentTarget.removeEventListener(MouseEvent.CLICK, bubbleClickedHandler)
+			TweenLite.to(e.currentTarget, 0.5, { alpha: 0 } );
 		}
 	}
 

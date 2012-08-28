@@ -9,13 +9,11 @@ package model
 		
 		var elementsInEquationArray:Array = new Array();
 		
+		var obj = 1;
 		var modifier:CalcElement = new CalcElement(1, "+");
 		
-		static public var SCORE_PENALTY:String = "scorePenalty"; 
-		static public var SCORE_BONUS:String = "scoreBonus"; 
-		static public var UPDATE_EQUATION:String = "updateEquation";
-		
-		public static var BUST:String = "bust";
+		//public static var BUST:String = "bust";
+		//public static var WIN:String = "win";
 		
 		public function Calculator() 
 		{
@@ -24,13 +22,12 @@ package model
 		
 		public function addElement(elem:CalcElement)
 		{
-			
 			elementsInEquationArray.push( elem );
 			
 			if ( !checkIfEquationIsSane() ) 
 			{
 				reset();
-				//dispatchEvent(new Event(Calculator.BUST));
+				dispatchEvent(new Event(Model.BUST));
 				return;
 			}
 			else
@@ -43,28 +40,63 @@ package model
 						switch(modifier.value)
 						{
 							case "+":
-								currentValue += int(elem.value);
-								fullEquation = fullEquation + " " + elem.value;
+								currentValue += int(elem.value);								
+								fullEquation = fullEquation + elem.value;
+								if (currentValue > obj || currentValue < 0)
+								{
+									reset();
+									dispatchEvent(new Event(Model.BUST));
+									break;
+								}
+								modifier.value = elem.value;
+								modifier.type = 0;
+								didGreat();
 								break;
 							case "*":
 								currentValue *= int(elem.value);
 								fullEquation += elem.value;
+								if (currentValue > obj || currentValue < 0)
+								{
+									reset();
+									dispatchEvent(new Event(Model.BUST));
+									break;
+								}
+								modifier.value = elem.value;
+								modifier.type = 0;
+								didGreat();
 								break;
 							case "-":
 								currentValue -= int(elem.value);
-								fullEquation += elem.value;
+								fullEquation += elem.value;								
+								if (currentValue > obj || currentValue < 0)
+								{
+									reset();
+									dispatchEvent(new Event(Model.BUST));
+									break;
+								}
+								modifier.value = elem.value;
+								modifier.type = 0;
+								didGreat();
 								break;
-						}
-					
-						modifier.value = elem.value;
-						modifier.type = 0;
-					
-						
-						//dispatchEvent(new Event(Calculator.UPDATE_EQUATION));
+							case "/":
+								currentValue /= int(elem.value);
+								fullEquation += elem.value;
+								if (currentValue > obj || currentValue < 0 || (currentValue % int(elem.value) != 0))
+								{
+									reset();
+									dispatchEvent(new Event(Model.BUST));
+									break;
+								}
+								modifier.value = elem.value;
+								modifier.type = 0;
+								didGreat();
+								break;
+						}						
 					}
 					else
 					{
-						//dispatchEvent(new Event(Calculator.BUST));
+						reset();
+						dispatchEvent(new Event(Model.BUST));
 					}
 				}
 				else 
@@ -74,12 +106,11 @@ package model
 						fullEquation += elem.value;
 						modifier.value = elem.value;
 						modifier.type = 1;
-					
-						//dispatchEvent(new Event(Calculator.UPDATE_EQUATION));
 					}
 					else
 					{
-						//dispatchEvent(new Event(Calculator.BUST));
+						reset();
+						dispatchEvent(new Event(Model.BUST));
 					}
 				}
 				
@@ -88,6 +119,9 @@ package model
 		
 		private function checkIfEquationIsSane():Boolean
 		{
+			if (elementsInEquationArray.length > 11)
+				return false;
+				
 			return true;
 		}
 		
@@ -104,9 +138,18 @@ package model
 			return this.fullEquation;
 		}
 		
-		public function getCurrentValue(): int
+		//public function getCurrentValue(): int
+		//{
+		//	return this.currentValue;
+		//}
+		
+		private function didGreat()
 		{
-			return this.currentValue;
+			if (currentValue == obj)
+			{
+				reset();
+				dispatchEvent(new Event(Model.GREAT));
+			}
 		}
 	}
 

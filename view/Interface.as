@@ -5,6 +5,8 @@ package view
 	import flash.text.*;
 	import flash.events.*;
 
+	import com.greensock.*;
+	
 	public class Interface extends Sprite
 	{
 		//Notifications
@@ -33,6 +35,11 @@ package view
 		//Score
 		private var scoreLifeArray:Array = new Array();
 		private var scoreBustArray:Array = new Array();
+		
+		//Score text
+		private var scoreText:TextField = new TextField();
+		private var scoreTextFormat:TextFormat;
+		private var scoreTextFont:Font = new Marvin();
 		
 		public function Interface() 
 		{
@@ -63,10 +70,10 @@ package view
 			
 			notifBust.x = notifX;
 			notifBust.y = notifY;
-			notifBust.visible = false;
+			notifBust.alpha = 0;
 			notifGreat.x = notifX;
 			notifGreat.y = notifY;
-			notifGreat.visible = false;
+			notifGreat.alpha = 0;
 			addChild(notifBust);
 			addChild(notifGreat);
 			
@@ -80,7 +87,7 @@ package view
 			equationText.defaultTextFormat = eqTextFormat;
 			equationText.autoSize = TextFieldAutoSize.LEFT;
 			equationText.x = 10;
-			equationText.y = objectiveY;
+			equationText.y = objectiveY + 15;
 			equationText.embedFonts = true;
 			equationText.antiAliasType = AntiAliasType.ADVANCED;
 			equationText.multiline = false;
@@ -89,21 +96,40 @@ package view
 			addChild(equationText);
 			
 			//} endregion
+			
+			//{ region Score text init
+			
+			scoreTextFormat = new TextFormat(scoreTextFont.fontName, textSize, 0xFF5A00, false, false, false, null, null, "left");
+			
+			scoreText.defaultTextFormat = scoreTextFormat;
+			scoreText.autoSize = TextFieldAutoSize.LEFT;
+			scoreText.x = 10;
+			scoreText.y = notifY * 1.60;
+			scoreText.embedFonts = true;
+			scoreText.antiAliasType = AntiAliasType.ADVANCED;
+			scoreText.multiline = false;
+			scoreText.selectable = false;
+			scoreText.filters = [outline];
+			scoreText.text = "0";
+			addChild(scoreText);
+			
+			//} endregion 
 		}
 		
 		public function setObjective(obj:int)
 		{
-			//var first:int = obj / 10;
-			//var second:int = obj % 10;
 			objText.text = obj.toString();
 		}
 		
-
+		public function setScore(score:int)
+		{
+			scoreText.text = score.toString();
+		}
 		
 		public function setLives(noOfLives:int)
 		{
 			var x:int = 10;
-			var y:int = objectiveY + 40;
+			var y:int = objectiveY - 10;
 			for (var i:int = 0; i < noOfLives; i++)
 			{
 				var ScoreBust:ScoreBustMC = new ScoreBustMC();
@@ -123,30 +149,31 @@ package view
 		
 		public function showBust(noOfBusts:int)
 		{
-			//trace(notifBust.visible + "|" + notifBust.x + "|" + notifBust.y);
-			notifBust.visible = true;
+			notifBust.alpha = 1
+			TweenLite.to(notifBust, 3, { alpha:0 });
 			scoreLifeArray[noOfBusts].visible = false;
 			scoreBustArray[noOfBusts].visible = true;
 		}
 		
-		public function hideBust()
-		{
-			notifBust.visible = false;
-		}
 		
 		public function showGreat()
 		{
-			notifGreat.visible = true;
+			notifGreat.alpha = 1
+			TweenLite.to(notifGreat, 3, { alpha:0 });
+			
 		}
 		
-		public function hideGreat()
+		public function resetLives()
 		{
-			notifGreat.visible = false;
+			for each(var scoreLife in scoreLifeArray)
+				scoreLife.visible = true;
+			for each(var scoreBust in scoreBustArray)
+				scoreBust.visible = false;
 		}
 		
-		public function addToEquation(char:String)
+		public function updateEquation(char:String)
 		{
-			equationText.appendText(char);
+			equationText.text = char;
 		}
 	}
 

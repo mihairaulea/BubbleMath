@@ -43,11 +43,10 @@
 		
 		private function setModel()
 		{
-			modelInst.addEventListener(Model.BUST, bustHandler);
-			modelInst.addEventListener(Model.GREAT, greatHandler);
+			modelInst.addEventListener(Model.SCORE_BONUS, scoreBonusHandler);
+			modelInst.addEventListener(Model.SCORE_PENALTY, scorePenaltyHandler);
 			modelInst.addEventListener(Model.NEW_GAME, newGameHandler);
 			modelInst.addEventListener(Model.NEW_PIECE, newPieceHandler);
-			//modelInst.addEventListener(Model.UPDATE_EQUATION, updateEquationHandler);
 			modelInst.init();
 		}
 		
@@ -69,19 +68,19 @@
 				viewInst.addBubbleOperator(calcElem.value, calcElem.pos);
 		}
 		
-		//private function updateEquationHandler(e:Event)
-		//{
-		//	viewInst.updateEquation();
-		//}
-		
-		private function bustHandler(e:Event)
+		private function scorePenaltyHandler(e:Event)
 		{
 			viewInst.bust(modelInst.noOfBusts++);
+			viewInst.updateScore(modelInst.score);
+			viewInst.updateObjective(modelInst.getNewObjective());
 		}
 		
-		private function greatHandler(e:Event)
+		private function scoreBonusHandler(e:Event)
 		{
-			viewInst.great();
+			//trace(modelInst.score);
+			viewInst.great();		
+			viewInst.updateScore(modelInst.score);
+			viewInst.updateObjective(modelInst.getNewObjective());
 		}
 		
 		
@@ -90,7 +89,7 @@
 		private function setView()
 		{
 			// THE ONLY ADD CHILD IN THIS CLASS!!!
-			viewInst.addEventListener(BubblePool.BUBBLE_CLICKED, bubbleClickedHandler);
+			viewInst.addEventListener(BubblePool.BUBBLE_CLICKED, bubbleClickedHandler, false);
 			viewInst.init();
 			addChild(viewInst);
 		}
@@ -99,8 +98,8 @@
 		
 		private function bubbleClickedHandler(e:Event)
 		{
-			trace(e.currentTarget.value, e.currentTarget.type);
-			var eq:String = modelInst.addToEquation(e.currentTarget.value, e.currentTarget.type);
+			//trace(e.target.currentBubble.type + "|" + e.target.currentBubble.value);
+			var eq:String = modelInst.addToEquation(e.target.currentBubble.value, e.target.currentBubble.type);
 			viewInst.updateEquation(eq);
 		}
 		

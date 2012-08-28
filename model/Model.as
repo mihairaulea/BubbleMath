@@ -32,6 +32,7 @@
 		// gameplay
 		public var noOfLives:int = 3;
 		public var noOfBusts:int = 0;
+		public var score:int = 0;
 		
 		private var calculator:Calculator = new Calculator();
 		
@@ -58,7 +59,9 @@
 		public function init()
 		{
 			dispatchEvent(new Event(Model.NEW_GAME));
-			dispatchEvent(new Event(Model.UPDATE_EQUATION));
+			//dispatchEvent(new Event(Model.UPDATE_EQUATION));
+			calculator.addEventListener(Model.BUST, bustHandler);
+			calculator.addEventListener(Model.GREAT, greatHandler);
 		}
 		
 		private function setOperatorsArray()
@@ -104,14 +107,17 @@
 			return Math.floor(Math.random() * maxPos);
 		}
 		
-		public function getCurrentObjective():int
-		{
-			return objective;
-		}
+		//public function getCurrentObjective():int
+		//{
+		//	return objective;
+		//}
+		
+		//public function getNewObjective():int
 		
 		public function getNewObjective():int
 		{
 			objective = this.minObjective + Math.ceil(Math.random() * objectiveRange);
+			calculator.obj = objective;
 			return objective;
 		}
 		
@@ -123,10 +129,17 @@
 			
 		}
 		
-		//public function bust()
-		//{
-		//	dispatchEvent(new Event(Model.BUST));
-		//}
+		public function bustHandler(e:Event)
+		{
+			score -= objective;
+			dispatchEvent(new Event(Model.SCORE_PENALTY));
+		}
+
+		public function greatHandler(e:Event)
+		{
+			score += objective;
+			dispatchEvent(new Event(Model.SCORE_BONUS));
+		}
 		
 		private function addPieceToScreen(e:TimerEvent):void
 		{

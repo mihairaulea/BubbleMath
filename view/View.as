@@ -49,6 +49,11 @@ package view
 			display.setLives(noOfLives);
 		}
 		
+		public function updateObjective(obj:int)
+		{
+			display.setObjective(obj);
+		}
+		
 		public function bust(noOfBusts)
 		{
 			display.showBust(noOfBusts);
@@ -66,7 +71,7 @@ package view
 		
 		public function updateEquation(char:String)
 		{
-			display.addToEquation(char);
+			display.updateEquation(char);
 		}
 		
 		public function addBubbleOperator(op:String, pos:int)
@@ -77,6 +82,11 @@ package view
 		public function addBubbleNumber(nr:int, pos:int)
 		{
 			bubblePool.spawnNewNumberBubble(nr, pos);
+		}
+		
+		public function updateScore(score:int)
+		{
+			display.setScore(score);
 		}
 		
 		//public function resizeView()
