@@ -14,7 +14,7 @@
 		
 		public var objective:int = 1;
 		
-		private var range:int = 7;
+		private var range:int = 9;
 		
 		public var maxItemsInEquation:int = 12;
 		
